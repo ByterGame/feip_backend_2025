@@ -1,0 +1,27 @@
+services:
+  php:
+      build: 
+        context: ./docker/php
+      container_name: php-container
+      volumes:
+          - .:/var/www/project
+      restart: always
+  nginx:
+      build: 
+        context: ./docker/nginx
+      container_name: nginx-container
+      volumes:
+        - .:/var/www/project
+      ports:
+        - ${EXPOSED_PORT}:80
+      depends_on:
+        - php
+
+  database:
+    build:
+      context: ./docker/postgresql
+    container_name: db-container
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
