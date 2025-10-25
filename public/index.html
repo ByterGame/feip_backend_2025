@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Система бронирования летних домиков</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .api-section {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .api-section h2 {
+            color: #4a5568;
+            border-bottom: 3px solid #667eea;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .endpoint {
+            background: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: transform 0.2s;
+        }
+
+        .endpoint:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .method {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+
+        .method.get {
+            background: #48bb78;
+            color: white;
+        }
+
+        .method.post {
+            background: #4299e1;
+            color: white;
+        }
+
+        .method.put {
+            background: #ed8936;
+            color: white;
+        }
+
+        .url {
+            font-family: 'Courier New', monospace;
+            background: #2d3748;
+            color: #68d391;
+            padding: 8px 12px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+
+        .description {
+            color: #4a5568;
+            margin-top: 10px;
+        }
+
+        .params {
+            background: #edf2f7;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+        }
+
+        .params h4 {
+            margin-bottom: 8px;
+            color: #2d3748;
+        }
+
+        .param-item {
+            margin: 5px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .feature-card i {
+            font-size: 2.5rem;
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            color: #4a5568;
+            margin-bottom: 10px;
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 50px;
+            padding: 20px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .api-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🏖️ Система бронирования летних домиков</h1>
+            <p>Добро пожаловать в API для управления бронированием домиков</p>
+        </div>
+
+        <div class="api-section">
+            <h2>📡 Доступные методы API</h2>
+            
+            <div class="endpoint">
+                <span class="method get">GET</span>
+                <strong>Получить список свободных домиков</strong>
+                <div class="url">/free-houses</div>
+                <div class="description">
+                    Возвращает список всех доступных для бронирования домиков с информацией об удобствах, количестве спальных мест и расстоянии до моря.
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method post">POST</span>
+                <strong>Создать заявку на бронирование</strong>
+                <div class="url">/booking</div>
+                <div class="description">
+                    Создает новую заявку на бронирование выбранного домика.
+                </div>
+                <div class="params">
+                    <h4>Параметры (это не get-query в uri):</h4>
+                    <div class="param-item">phone: string (номер телефона клиента)</div>
+                    <div class="param-item">house_id: string (ID домика)</div>
+                    <div class="param-item">comment: string (комментарий, опционально)</div>
+                </div>
+            </div>
+
+            <div class="endpoint">
+                <span class="method put">PUT</span>
+                <strong>Изменить заявку на бронирование</strong>
+                <div class="url">/booking/{id}</div>
+                <div class="description">
+                    Обновляет комментарий в существующей заявке на бронирование.
+                </div>
+                <div class="params">
+                    <h4>Параметры (также не get-query в uri):</h4>
+                    <div class="param-item">comment: string (новый комментарий)</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="features">
+            <div class="feature-card">
+                <div>📊</div>
+                <h3>CSV база данных</h3>
+                <p>Все данные хранятся в CSV файлах для простоты и наглядности</p>
+            </div>
+            
+            <div class="feature-card">
+                <div>🔍</div>
+                <h3>Поиск свободных домиков</h3>
+                <p>Фильтрация по удобствам и расстоянию до моря</p>
+            </div>
+            
+            <div class="feature-card">
+                <div>📝</div>
+                <h3>Простое управление</h3>
+                <p>Легкое создание и редактирование бронирований</p>
+            </div>
+            
+            <div class="feature-card">
+                <div>⚡</div>
+                <h3>REST API</h3>
+                <p>Стандартные HTTP методы для интеграции</p>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>Система разработана на PHP Symfony • Для тестирования используйте Postman или curl</p>
+        </div>
+    </div>
+</body>
+</html>
